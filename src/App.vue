@@ -249,53 +249,71 @@
 						></button>
 					</div>
 					<div class="modal-body">
-						<div v-if="reportError" class="alert alert-danger error-alert">{{ reportError }}</div>
-						<div v-if="actionType === 'report' && isLoadingAction" class="text-center p-3">
-							<div class="spinner-border text-primary" role="status">
-								<span class="visually-hidden">Submitting...</span>
-							</div>
-							<p class="mt-2 mb-0">Enviando Reporte...</p>
-							<p class="small text-muted">Por favor, confirma en tu wallet.</p>
-						</div>
-						<div v-else>
-							<div class="mb-3">
-								<label for="reportTweetId" class="form-label">Tweet ID *</label>
-								<input
-									type="text"
-									class="form-control"
-									id="reportTweetId"
-									v-model.trim="reportData.tweetId"
-									placeholder="Introduce el ID numérico del tweet"
-									:disabled="!!initialTweetId || isLoadingAction"
-								>
-							</div>
-							<div class="mb-3">
-								<label for="reportTweetContent" class="form-label">Contenido del Tweet *</label>
-								<textarea
-									class="form-control"
-									id="reportTweetContent"
-									rows="4"
-									v-model="reportData.tweetContent"
-									placeholder="Pega o verifica el contenido exacto del tweet"
-									:disabled="isLoadingAction"
-								></textarea>
-								<div class="form-text">El contenido será hasheado (Keccak256) antes de enviar.</div>
-							</div>
-							<div class="mb-3">
-								<label for="reportStakeAmount" class="form-label">Monto de Stake (MNT) *</label>
-								<input
-									type="number"
-									step="0.01"
-									min="0"
-									class="form-control"
-									id="reportStakeAmount"
-									v-model="reportData.stakeAmount"
-									:placeholder="`Mínimo: ${minStakeFormatted} MNT`"
-									:disabled="isLoadingAction"
-								>
-							</div>
-						</div>
-					</div>
+                   <div v-if="reportError" class="alert alert-danger error-alert">{{ reportError }}</div>
+
+                   <div v-if="actionType === 'report' && isLoadingAction" class="text-center p-3">
+                      <div class="spinner-border text-primary" role="status">
+                         <span class="visually-hidden">Submitting...</span>
+                      </div>
+                      <p class="mt-2 mb-0">Enviando Reporte...</p>
+                      <p class="small text-muted">Por favor, confirma en tu wallet.</p>
+                   </div>
+
+                   <div v-else>
+                      <div class="mb-3">
+                         <label for="reportTweetId" class="form-label">Tweet ID *</label>
+                         <input
+                            type="text"
+                            class="form-control"
+                            id="reportTweetId"
+                            v-model.trim="reportData.tweetId"
+                            placeholder="Introduce el ID numérico del tweet"
+                            :disabled="!!initialTweetId || isLoadingAction"
+                            >
+                      </div>
+
+                      <div v-if="isAiLoading" class="text-center p-3 my-3 border rounded bg-light">
+                         <div class="spinner-border spinner-border-sm text-info me-2" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                         </div>
+                         <span class="text-info fst-italic">IA está dando su opinión...</span>
+                      </div>
+                      <div v-else-if="aiError" class="alert alert-warning alert-sm p-2 my-3 error-alert">
+                         <strong>Error IA:</strong> {{ aiError }}
+                      </div>
+                      <div v-else-if="aiOpinion" class="alert alert-info alert-sm p-2 my-3">
+                         <strong class="d-block mb-1">💡 Sugerencia IA:</strong>
+                         <p class="mb-0 small fst-italic"> {{ aiOpinion.reason }}</p>
+                      </div>
+
+                      <div class="mb-3">
+                         <label for="reportTweetContent" class="form-label">Contenido del Tweet *</label>
+                         <textarea
+                            class="form-control"
+                            id="reportTweetContent"
+                            rows="4"
+                            v-model="reportData.tweetContent"
+                            placeholder="Pega o verifica el contenido exacto del tweet"
+                            :disabled="isLoadingAction"
+                            ></textarea>
+                         <div class="form-text">El contenido será hasheado (Keccak256) antes de enviar.</div>
+                      </div>
+
+                      <div class="mb-3">
+                         <label for="reportStakeAmount" class="form-label">Monto de Stake (MNT) *</label>
+                         <input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            class="form-control"
+                            id="reportStakeAmount"
+                            v-model="reportData.stakeAmount"
+                            :placeholder="`Mínimo: ${minStakeFormatted} MNT`"
+                            :disabled="isLoadingAction"
+                            >
+                      </div>
+                   </div>
+                </div>
 					<div class="modal-footer">
 						<button
 							type="button"
@@ -342,6 +360,16 @@
 					</div>
 					<div class="modal-body">
 						<div v-if="voteError" class="alert alert-danger error-alert">{{ voteError }}</div>
+						<div v-else-if="aiError" class="alert alert-warning alert-sm p-2 my-3 error-alert">
+							<strong>Error IA:</strong> {{ aiError }}
+						</div>
+						<div v-else-if="aiOpinion" class="alert alert-info alert-sm p-2 my-3">
+							<strong class="d-block mb-1">💡 Sugerencia IA:</strong>
+							<p class="mb-1 small">
+								<strong>Veredicto IA:</strong> {{ aiOpinion.result ? 'Verdadero' : 'Falso' }}</p>
+							<p class="mb-0 small fst-italic"><strong>Razón IA:</strong> {{ aiOpinion.reason }}</p>
+						</div>
+
 						<div v-if="actionType === 'vote' && isLoadingAction" class="text-center p-3">
 							<div class="spinner-border text-primary" role="status">
 								<span class="visually-hidden">Submitting...</span>
@@ -450,7 +478,9 @@
 
 	const CONTRACT_ADDRESS = '0x307bDca58c2761F9be800790C900e554E43250a9';
 	const MANTLE_SEPOLIA_EXPLORER_URL = 'https://explorer.sepolia.mantle.xyz';
-
+	const isAiLoading = ref(false);
+	const aiOpinion = ref(null); // { result: boolean, reason: string } | null
+	const aiError = ref(null);
 	const isConnected = ref(false);
 	const account = ref(null);
 	const allTweets = ref([]);
@@ -507,6 +537,66 @@
 	const clientSideHasMoreTweets = computed(() => {
 		return displayedTweets.value.length < allTweets.value.length;
 	});
+
+	async function fetchAiOpinion(tweetContent) {
+		console.log('App.vue: fetchAiOpinion called. Received content:', tweetContent ? tweetContent.substring(0, 50) + '...' : tweetContent);
+		aiOpinion.value = null;
+		aiError.value = null;
+		isAiLoading.value = false;
+
+		if(!tweetContent || typeof tweetContent !== 'string' || tweetContent.trim() === '') {
+			console.warn('App.vue: fetchAiOpinion - No valid tweet content provided. Aborting AI call.');
+			aiError.value = 'No hay contenido de tweet disponible para analizar.';
+			return;
+		}
+
+		isAiLoading.value = true;
+		const apiUrl = 'https://wapa-api.qcdr.io/ai/resolve-check';
+		console.log('App.vue: Fetching AI opinion from:', apiUrl);
+
+		try {
+			const response = await fetch(apiUrl, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ prompt: tweetContent }),
+			});
+			console.log('App.vue: AI API Response Status:', response.status);
+
+			if(!response.ok) {
+				let errorBody = 'Could not read error body';
+				try {
+					errorBody = await response.text();
+					console.error('App.vue: AI API Error Body:', errorBody);
+				} catch(e) {
+					console.error('App.vue: Failed to read AI API error body:', e);
+				}
+				throw new Error(`Error ${ response.status }: ${ response.statusText }. Body: ${ errorBody }`);
+			}
+
+			const jsonResponse = await response.json();
+			console.log('App.vue: AI API JSON Response:', jsonResponse);
+
+			if(jsonResponse.result === 'success' && jsonResponse.data && typeof jsonResponse.data.result !== 'undefined' && jsonResponse.data.reason) {
+				aiOpinion.value = {
+					result: jsonResponse.data.result,
+					reason: jsonResponse.data.reason,
+				};
+				console.log('App.vue: AI Opinion Received and Parsed:', aiOpinion.value);
+			} else {
+				console.error('App.vue: Unexpected AI API response format:', jsonResponse);
+				throw new Error(jsonResponse.message || 'Formato de respuesta inesperado de la API de IA.');
+			}
+		} catch(error) {
+			console.error('App.vue: Error during fetchAiOpinion:', error);
+			aiError.value = `Error al consultar la IA: ${ error.message }`;
+			aiOpinion.value = null;
+		} finally {
+			console.log('App.vue: fetchAiOpinion finished. Setting isAiLoading to false.');
+			isAiLoading.value = false;
+		}
+	}
 
 	const loadMoreClientSide = () => {
 		if(clientSideHasMoreTweets.value) {
@@ -777,7 +867,18 @@
 		reportData.value = { tweetId: tweetId || '', tweetContent: presetContent || '', stakeAmount: '' };
 		reportError.value = null;
 		clearSuccess();
+
+		// Reset AI state before opening
+		isAiLoading.value = false;
+		aiOpinion.value = null;
+		aiError.value = null;
+
 		showReportModal.value = true;
+
+		// Call AI opinion fetch ONLY if content is available
+		if(presetContent) {
+			fetchAiOpinion(presetContent);
+		}
 	};
 	const closeReportModal = () => {
 		showReportModal.value = false;
@@ -842,21 +943,36 @@
 
 	const openVoteModal = (tweet) => {
 		if(!tweet?.tweetId) {
-			globalError.value = 'Error: Datos inválidos.';
+			globalError.value = 'Error: Datos de tweet inválidos para abrir modal.';
 			return;
 		}
+		console.log('App.vue: openVoteModal called for tweet ID:', tweet.tweetId, 'Initial Action:', initialAction.value);
 		if(minStake.value === BigInt(0) && isConnected.value) loadMinStake();
+
+		// Reset AI state variables (aunque ya no se usarán aquí, es buena práctica)
+		isAiLoading.value = false;
+		aiOpinion.value = null;
+		aiError.value = null;
+
 		selectedTweet.value = tweet;
 		voteData.value = { status: '', stakeAmount: '', justification: '' };
 		voteError.value = null;
 		clearSuccess();
 		showVoteModal.value = true;
+
+		// <<< Ya NO se llama a fetchAiOpinion desde aquí >>>
 	};
 	const closeVoteModal = () => {
 		showVoteModal.value = false;
 		selectedTweet.value = null;
 		voteData.value = { status: '', stakeAmount: '', justification: '' };
 		voteError.value = null;
+
+		// Clear AI state
+		isAiLoading.value = false;
+		aiOpinion.value = null;
+		aiError.value = null;
+
 		if(initialAction.value) clearInitialAction();
 	};
 
