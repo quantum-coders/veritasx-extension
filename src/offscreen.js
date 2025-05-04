@@ -7,7 +7,7 @@ import { hashTweetContent } from './helpers.js';
 console.log('Offscreen Script: Script cargado. Timestamp:', Date.now());
 console.log('Offscreen Script: Verificando ethers y ABI...', typeof ethers, typeof VeritasXAbi);
 
-const CONTRACT_ADDRESS = '0x2521aac9eB2831A10C28034d69B7488CFD4d8ce7';
+const CONTRACT_ADDRESS = '0x307bDca58c2761F9be800790C900e554E43250a9';
 const MANTLE_SEPOLIA_CHAIN_ID_HEX = '0x138b';
 const MANTLE_SEPOLIA_CHAIN_ID_DEC = 5003;
 

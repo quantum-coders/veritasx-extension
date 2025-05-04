@@ -1,50 +1,58 @@
 {
-  "manifest_version": 3,
-  "name": "VeritasX Fact Checker",
-  "version": "1.3.0",
-  "description": "Report and verify tweets on Mantle Sepolia via VeritasX contract.",
-"permissions": [
-    "storage",
-    "activeTab",
-    "scripting",
-    "tabs"
-  ],
-  "host_permissions": [
-    "*://*.twitter.com/*",
-    "*://x.com/*"
-  ],
-  "action": {
-    "default_popup": "popup.html",
-	  "default_icon": {
-      "16": "icons/icon16.svg",
-      "48": "icons/icon48.svg",
-      "128": "icons/icon128.svg"
-    }
-  },
-  "icons": {
-    "16": "icons/icon16.svg",
-    "48": "icons/icon48.svg",
-    "128": "icons/icon128.svg"
-  },
-  "background": {
-    "service_worker": "background.js",
-    "type": "module"
-  },
-  "content_scripts": [
-    {
-      "matches": [
-        "*://*.twitter.com/*",
-        "*://x.com/*"
-      ],
-      "js": ["content.js"],
-      "run_at": "document_idle"
-    }
-  ],
-  "web_accessible_resources": [
-     {
-        "resources": ["icons/*", "assets/*", "offscreen.html"],
-        "matches": ["<all_urls>"]
-     }
-   ],
-   "minimum_chrome_version": "109"
+	"manifest_version": 3,
+	"name": "VeritasX Fact Checker",
+	"version": "1.3.0",
+	"description": "Report and verify tweets on Mantle Sepolia via VeritasX contract.",
+	"permissions": [
+		"storage",
+		"activeTab",
+		"scripting",
+		"tabs"
+	],
+	"host_permissions": [
+		"*://*.twitter.com/*",
+		"*://x.com/*"
+	],
+	"action": {
+		"default_popup": "popup.html",
+		"default_icon": {
+			"16": "icons/icon16.svg",
+			"48": "icons/icon48.svg",
+			"128": "icons/icon128.svg"
+		}
+	},
+	"icons": {
+		"16": "icons/icon16.svg",
+		"48": "icons/icon48.svg",
+		"128": "icons/icon128.svg"
+	},
+	"background": {
+		"service_worker": "background.js",
+		"type": "module"
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"*://*.twitter.com/*",
+				"*://x.com/*"
+			],
+			"js": [
+				"content.js"
+			],
+			"run_at": "document_idle"
+		}
+	],
+	"web_accessible_resources": [
+		{
+			"resources": [
+				"icons/*",
+				"assets/*",
+				"offscreen.html"
+			],
+			"matches": [
+				"<all_urls>"
+			]
+		}
+	],
+	"minimum_chrome_version": "109"
 }

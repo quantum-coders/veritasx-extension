@@ -93,7 +93,7 @@ const appTemplate = `
 `;
 
 // Configuration
-const CONTRACT_ADDRESS = "0x2521aac9eB2831A10C28034d69B7488CFD4d8ce7"; // Dirección del contrato desplegado
+const CONTRACT_ADDRESS = "0x54BF692Ccd8B04483d7ffeCEa059F623eF8bA439"; // Dirección del contrato desplegado
 const MANTLE_SEPOLIA_CHAIN_ID = "5003"; // Mantle Sepolia Chain ID
 const MANTLE_SEPOLIA_RPC_URL = "https://rpc.sepolia.mantle.xyz"; // Mantle Sepolia RPC URL
 const MANTLE_SEPOLIA_EXPLORER_URL = "https://explorer.sepolia.mantle.xyz"; // Mantle Sepolia Explorer
