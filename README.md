@@ -4,11 +4,16 @@
 
 ---
 
-**[Link al Video Demo - ¡Próximamente!]**
+**[https://www.veed.io/view/44149187-2c4f-49f0-91ec-fa09debd99dd?panel=share]**
 
-**(Demo Video Link - Coming Soon!)**
+**(Demo Video Link)**
 
 *(Aquí mostraremos cómo funciona VeritasX en acción / Here we'll show VeritasX in action)*
+
+---
+
+## Smart Contract
+**Dirección del Smart Contract (Mantle Sepolia Testnet):** [0x307bDca58c2761F9be800790C900e554E43250a9](https://explorer.testnet.mantle.xyz/address/0x307bDca58c2761F9be800790C900e554E43250a9)
 
 ---
 
@@ -52,11 +57,11 @@ VeritasX es una extensión de navegador que empodera a la comunidad para verific
 VeritasX combina la transparencia de blockchain con la asistencia de IA para crear un ecosistema de verificación robusto:
 
 1.  **Smart Contract en Mantle (Corazón del Sistema):**
-    * Desplegado en **Mantle Sepolia Testnet** (Dirección: `0x307bDca58c2761F9be800790C900e554E43250a9`).
+    * Desplegado en **Mantle Sepolia Testnet** (Dirección: [0x307bDca58c2761F9be800790C900e554E43250a9](https://explorer.testnet.mantle.xyz/address/0x307bDca58c2761F9be800790C900e554E43250a9)).
     * **¿Por qué Mantle?** Elegimos Mantle por su **escalabilidad L2, bajas tarifas de transacción y compatibilidad EVM total**. Esto es esencial para permitir las frecuentes interacciones on-chain (reportes, votos, reclamos) de forma económica y rápida.
     * **Funciones Clave del Contrato:** Almacena de forma segura los hashes de contenido de los tweets reportados, los stakes individuales, los votos, las justificaciones, el estado de resolución y maneja la lógica de distribución de recompensas.
     *(**Smart Contract on Mantle (System Core):***
-    * *Deployed on **Mantle Sepolia Testnet** (Address: `0x307bDca58c2761F9be800790C900e554E43250a9`).*
+    * *Deployed on **Mantle Sepolia Testnet** (Address: [0x307bDca58c2761F9be800790C900e554E43250a9](https://explorer.testnet.mantle.xyz/address/0x307bDca58c2761F9be800790C900e554E43250a9)).*
     * ***Why Mantle?** We chose Mantle for its **L2 scalability, low transaction fees, and full EVM compatibility**. This is essential to enable frequent on-chain interactions (reports, votes, claims) affordably and quickly.*
     * ***Key Contract Functions:** Securely stores content hashes of reported tweets, individual stakes, votes, justifications, resolution status, and handles reward distribution logic.*)
 
